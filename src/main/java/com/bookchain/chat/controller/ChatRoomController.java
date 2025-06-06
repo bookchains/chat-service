@@ -28,14 +28,16 @@ public class ChatRoomController {
 
         String buyerId = (String) request.getAttribute("userId");
         String sellerId = requestDto.getSellerId();
+        String tokenId = requestDto.getTokenId(); // ✅ 추가
 
         if (buyerId == null || sellerId == null || buyerId.equals(sellerId)) {
             return ResponseEntity.badRequest().build();
         }
 
-        ChatRoom room = chatRoomService.createOrGetChatRoom(buyerId, sellerId);
+        ChatRoom room = chatRoomService.createOrGetChatRoom(buyerId, sellerId, tokenId);
         return ResponseEntity.ok(room);
     }
+
 
     /**
      * 로그인한 유저가 참여한 채팅방 전체 조회 (판매자/구매자 공통)

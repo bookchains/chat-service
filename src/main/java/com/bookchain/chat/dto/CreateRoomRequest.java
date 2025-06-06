@@ -10,4 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CreateRoomRequest {
     private String sellerId;
+    private String tokenId; // ✅ 책 고유 식별자
 }

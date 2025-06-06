@@ -18,7 +18,7 @@ public class ChatRoomService {
     /**
      * 동일 buyer-seller 조합 채팅방이 존재하면 재활용, 없으면 새로 생성
      */
-    public ChatRoom createOrGetChatRoom(String buyerId, String sellerId) {
+    public ChatRoom createOrGetChatRoom(String buyerId, String sellerId, String tokenId) {
         if (buyerId == null || sellerId == null) {
             throw new IllegalArgumentException("buyerId 또는 sellerId가 null입니다.");
         }
@@ -28,6 +28,7 @@ public class ChatRoomService {
                         .id(UUID.randomUUID().toString())
                         .buyerId(buyerId)
                         .sellerId(sellerId)
+                        .tokenId(tokenId)
                         .build()));
     }
 

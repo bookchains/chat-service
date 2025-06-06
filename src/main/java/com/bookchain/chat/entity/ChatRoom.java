@@ -16,4 +16,7 @@ public class ChatRoom {
 
     private String buyerId;
     private String sellerId;
+
+    private String tokenId;
 }
+
