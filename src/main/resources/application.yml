@@ -19,6 +19,11 @@ logging:
   level:
     root: INFO
     com.bookchain: DEBUG
+    org.springframework.web: INFO         # 웹 요청 로그
+    org.springframework.data.mongodb: INFO  # Mongo 연동 로그
+    org.springframework.messaging: INFO   # WebSocket 메시지 로깅
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n"
 
 jwt:
   secret: cbe9c29976d76bfb689a1c64063b0d6a48483593effc619ca4cf7cf9b46d070961b4ee43c23285b262e38f3bb0a49bec870a9c79d793e2dc7776538f3407624603c95685ff9aad5aa74311d11459c3e7a18038994381c7d01d1f54c14f592bc42a24a6084956e1d75c98a3e4fcc8c32a084e83ce4758a2de9acfc481d254e9e2bf1b622c5470ecaa8d5da872d44beaf8b9b57b011412cbd450304b99cb22e1a8ab3c26a7ba4fd2a4c1e22010aed0fabf733418a9412fa3986fbaff86a96ecb9ea3f0b2f148f1fe69adbc5d8654f2a157eca27ce38b0be319d3ce7437a94426d679e27b203f2194d9ae2f32d84782cfdcd1c3e2dc671d08982ce0042b96466cfb

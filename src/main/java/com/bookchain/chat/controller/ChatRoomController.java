@@ -53,12 +53,18 @@ public class ChatRoomController {
         return ResponseEntity.ok(chatRoomService.getMyChatRooms(userId));
     }
 
-    /**
-     * 채팅방 삭제 (soft delete)
-     */
     @DeleteMapping("/room/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable String roomId) {
+    public ResponseEntity<Void> deleteRoom(
+            @PathVariable String roomId,
+            HttpServletRequest request) {
+
+        String userId = (String) request.getAttribute("userId");
+
+        if (userId == null) {
+            return ResponseEntity.badRequest().build();
+        }
         chatRoomService.deleteRoom(roomId);
         return ResponseEntity.ok().build();
     }
+
 }
