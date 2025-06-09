@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ChatRoomRepository extends MongoRepository<ChatRoom, String> {
-    Optional<ChatRoom> findByBuyerIdAndSellerId(String buyerId, String sellerId);
+    Optional<ChatRoom> findByBuyerIdAndSellerIdAndTokenId(String buyerId, String sellerId, String tokenId);
     List<ChatRoom> findByBuyerIdOrSellerId(String buyerId, String sellerId);
-
 }

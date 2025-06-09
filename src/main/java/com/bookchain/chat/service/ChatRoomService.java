@@ -19,18 +19,18 @@ public class ChatRoomService {
     private final ChatRoomRepository repository;
 
     /**
-     * 동일 buyer-seller 조합 채팅방이 존재하면 재활용, 없으면 새로 생성
+     * 동일 buyer-seller-token 조합 채팅방이 존재하면 재활용, 없으면 새로 생성
      */
     public ChatRoom createOrGetChatRoom(String buyerId, String sellerId, String tokenId) {
         log.info("[createOrGetChatRoom] 호출 - buyerId: {}, sellerId: {}, tokenId: {}", buyerId, sellerId, tokenId);
 
-        if (buyerId == null || sellerId == null) {
-            log.error("[createOrGetChatRoom] buyerId 또는 sellerId가 null입니다.");
-            throw new IllegalArgumentException("buyerId 또는 sellerId가 null입니다.");
+        if (buyerId == null || sellerId == null || tokenId == null) {
+            log.error("[createOrGetChatRoom] buyerId, sellerId 또는 tokenId가 null입니다.");
+            throw new IllegalArgumentException("buyerId, sellerId, tokenId는 null일 수 없습니다.");
         }
 
         try {
-            Optional<ChatRoom> existing = repository.findByBuyerIdAndSellerId(buyerId, sellerId);
+            Optional<ChatRoom> existing = repository.findByBuyerIdAndSellerIdAndTokenId(buyerId, sellerId, tokenId);
 
             if (existing.isPresent()) {
                 log.info("[createOrGetChatRoom] 기존 채팅방 재사용 - roomId: {}", existing.get().getId());
@@ -50,10 +50,12 @@ public class ChatRoomService {
             return savedRoom;
 
         } catch (DataAccessException dae) {
-            log.error("[createOrGetChatRoom] DB 접근 오류 - buyerId: {}, sellerId: {}, 메시지: {}", buyerId, sellerId, dae.getMessage(), dae);
+            log.error("[createOrGetChatRoom] DB 접근 오류 - buyerId: {}, sellerId: {}, tokenId: {}, 메시지: {}",
+                    buyerId, sellerId, tokenId, dae.getMessage(), dae);
             throw dae;
         } catch (Exception e) {
-            log.error("[createOrGetChatRoom] 알 수 없는 오류 - buyerId: {}, sellerId: {}, 메시지: {}", buyerId, sellerId, e.getMessage(), e);
+            log.error("[createOrGetChatRoom] 알 수 없는 오류 - buyerId: {}, sellerId: {}, tokenId: {}, 메시지: {}",
+                    buyerId, sellerId, tokenId, e.getMessage(), e);
             throw e;
         }
     }
