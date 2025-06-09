@@ -18,9 +18,6 @@ public class ChatService {
 
     private final ChatMessageRepository repository;
 
-    /**
-     * 채팅 메시지를 저장
-     */
     public void saveMessage(ChatMessageDto dto) {
         log.info("[saveMessage] 호출됨 - chatRoomId: {}, sender: {}, content: {}",
                 dto.getChatRoomId(), dto.getSender(), dto.getContent());
@@ -34,7 +31,7 @@ public class ChatService {
         try {
             ChatMessage message = ChatMessage.builder()
                     .chatRoomId(dto.getChatRoomId())
-                    .sender(dto.getSender())
+                    .sender(dto.getSender().toLowerCase())
                     .content(dto.getContent())
                     .timestamp(LocalDateTime.now())
                     .build();
@@ -51,9 +48,6 @@ public class ChatService {
         }
     }
 
-    /**
-     * 특정 채팅방의 모든 메시지를 조회
-     */
     public List<ChatMessage> getMessages(String chatRoomId) {
         log.info("[getMessages] 호출됨 - chatRoomId: {}", chatRoomId);
 

@@ -18,10 +18,10 @@ public class ChatRoomService {
 
     private final ChatRoomRepository repository;
 
-    /**
-     * 동일 buyer-seller-token 조합 채팅방이 존재하면 재활용, 없으면 새로 생성
-     */
     public ChatRoom createOrGetChatRoom(String buyerId, String sellerId, String tokenId) {
+        buyerId = buyerId.toLowerCase();
+        sellerId = sellerId.toLowerCase();
+
         log.info("[createOrGetChatRoom] 호출 - buyerId: {}, sellerId: {}, tokenId: {}", buyerId, sellerId, tokenId);
 
         if (buyerId == null || sellerId == null || tokenId == null) {
@@ -60,10 +60,8 @@ public class ChatRoomService {
         }
     }
 
-    /**
-     * 로그인한 유저가 참여한 모든 채팅방 반환
-     */
     public List<ChatRoom> getMyChatRooms(String userId) {
+        userId = userId.toLowerCase();
         log.info("[getMyChatRooms] 호출 - userId: {}", userId);
 
         if (userId == null) {
@@ -91,9 +89,6 @@ public class ChatRoomService {
         }
     }
 
-    /**
-     * 하드 삭제 방식으로 채팅방 완전히 제거
-     */
     public void deleteRoom(String roomId) {
         log.warn("[deleteRoom] 호출 - roomId: {}", roomId);
 

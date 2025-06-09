@@ -25,7 +25,6 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
                                    WebSocketHandler wsHandler, Map<String, Object> attributes) {
 
         try {
-            // ✅ UriComponentsBuilder 사용하여 토큰 추출
             UriComponents components = UriComponentsBuilder.fromUri(request.getURI()).build();
             String token = components.getQueryParams().getFirst("token");
 
@@ -34,14 +33,12 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
                 return false;
             }
 
-            // ✅ 토큰 검증
             if (!jwtUtil.validateToken(token)) {
                 throw new JwtException("토큰이 유효하지 않음");
             }
 
-            // ✅ 토큰에서 userId 추출하여 WebSocket 세션에 저장
             String address = jwtUtil.extractAddress(token);
-            attributes.put("userId", address);
+            attributes.put("userId", address.toLowerCase()); // ✅ 소문자로 저장
             return true;
 
         } catch (JwtException e) {
@@ -56,7 +53,6 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
                                WebSocketHandler wsHandler, Exception exception) {
-        // 필요 시 로깅 가능
         log.debug("WebSocket 핸드셰이크 완료");
     }
 }

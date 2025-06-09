@@ -22,7 +22,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        // ✅ CORS preflight 요청은 필터 검증 없이 통과시킴
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             filterChain.doFilter(request, response);
             return;
@@ -35,7 +34,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (jwtUtil.validateToken(token)) {
                 try {
                     String address = jwtUtil.extractAddress(token);
-                    request.setAttribute("userId", address);
+                    request.setAttribute("userId", address.toLowerCase()); // ✅ 소문자로 저장
                 } catch (Exception e) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
                     return;

@@ -17,20 +17,15 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
 
-    /**
-     * 구매자 → 판매자 채팅방 요청
-     * 중복 방 생성 방지 (buyer-seller 조합 기준 정렬됨)
-     */
     @PostMapping("/room")
     public ResponseEntity<ChatRoom> createOrGetRoom(
             @RequestBody CreateRoomRequest requestDto,
             HttpServletRequest request) {
 
-        String buyerId = (String) request.getAttribute("userId");
-        String sellerId = requestDto.getSellerId();
-        String tokenId = requestDto.getTokenId(); // ✅ 추가
+        String buyerId = ((String) request.getAttribute("userId")).toLowerCase();
+        String sellerId = requestDto.getSellerId().toLowerCase();
+        String tokenId = requestDto.getTokenId();
 
-        // ✅ 로그 출력 추가
         System.out.println("buyerId: " + buyerId);
         System.out.println("sellerId: " + sellerId);
         System.out.println("tokenId: " + tokenId);
@@ -43,12 +38,9 @@ public class ChatRoomController {
         return ResponseEntity.ok(room);
     }
 
-    /**
-     * 로그인한 유저가 참여한 채팅방 전체 조회 (판매자/구매자 공통)
-     */
     @GetMapping("/rooms")
     public ResponseEntity<List<ChatRoom>> getMyChatRooms(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
+        String userId = ((String) request.getAttribute("userId")).toLowerCase();
 
         if (userId == null) {
             return ResponseEntity.badRequest().build();
@@ -62,7 +54,7 @@ public class ChatRoomController {
             @PathVariable String roomId,
             HttpServletRequest request) {
 
-        String userId = (String) request.getAttribute("userId");
+        String userId = ((String) request.getAttribute("userId")).toLowerCase();
 
         if (userId == null) {
             return ResponseEntity.badRequest().build();
